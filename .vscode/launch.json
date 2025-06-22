@@ -1,0 +1,12 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Run Sinonimatch",
+      "request": "launch",
+      "mainClass": "Sinonimatch",
+      "vmArgs": "--module-path lib/javafx-sdk-17.0.15/lib --add-modules javafx.controls,javafx.media"
+    }
+  ]
+}
