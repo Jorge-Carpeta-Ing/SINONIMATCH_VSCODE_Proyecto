@@ -14,6 +14,7 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import sinonimatch.controllers.GameController;
+import sinonimatch.utils.ModalGanar;
 import sinonimatch.utils.ModalPerder;
 import sinonimatch.models.Pregunta;
 
@@ -159,21 +160,21 @@ public class GameView {
                             "-fx-padding: 8 15;");
 
             final int index = i;
-            opcionesButtons[i].setOnMouseEntered(e -> opcionesButtons[index].setStyle(
+            opcionesButtons[i].setOnMouseEntered(_ -> opcionesButtons[index].setStyle(
                     "-fx-background-color: rgba(94, 131, 185, 0.9);" +
                             "-fx-text-fill: white;" +
                             "-fx-background-radius: 5;" +
                             "-fx-padding: 8 15;" +
                             "-fx-effect: dropshadow(gaussian, rgba(255,255,255,0.3), 10, 0.5, 0, 0);"));
 
-            opcionesButtons[i].setOnMouseExited(e -> opcionesButtons[index].setStyle(
+            opcionesButtons[i].setOnMouseExited(_ -> opcionesButtons[index].setStyle(
                     "-fx-background-color: rgba(74, 111, 165, 0.7);" +
                             "-fx-text-fill: white;" +
                             "-fx-background-radius: 5;" +
                             "-fx-padding: 8 15;" +
                             "-fx-effect: null;"));
 
-            opcionesButtons[i].setOnAction(e -> manejarRespuesta(index));
+            opcionesButtons[i].setOnAction(_ -> manejarRespuesta(index));
         }
     }
 
@@ -247,15 +248,31 @@ public class GameView {
                             "-fx-text-fill: white;" +
                             "-fx-background-radius: 5;" +
                             "-fx-padding: 8 15;");
-            feedbackLabel.setText("✅ ¡Correcto!");
+            feedbackLabel.setText("✅ ¡Correcto! +10 puntos");
 
             PauseTransition pause = new PauseTransition(Duration.seconds(1));
-            pause.setOnFinished(e -> {
+            pause.setOnFinished(_ -> {
                 if (controller.avanzarPregunta()) {
                     actualizarPregunta();
                 } else {
-                    feedbackLabel.setText("🎉 ¡Felicidades! Has completado el nivel " + controller.getNivelActual());
-                    // Aquí podrías agregar lógica para avanzar al siguiente nivel
+                    if (controller.esJuegoCompletado()) {
+                        feedbackLabel.setText("🏆 ¡Felicidades! Has completado TODOS los niveles");
+                        // Mostrar modal de victoria y reiniciar
+                        PauseTransition finalPause = new PauseTransition(Duration.seconds(2));
+                        finalPause.setOnFinished(_ -> {
+                            ModalGanar.mostrar(stage, controller.getPuntaje(), () -> {
+                                controller.reiniciarJuegoCompleto();
+                                actualizarPregunta();
+                            });
+                        });
+                        finalPause.play();
+                    } else {
+                        // No hay más preguntas pero no es el último nivel
+                        feedbackLabel.setText("🎉 ¡Nivel completado! Preparando siguiente nivel...");
+                        PauseTransition nivelPause = new PauseTransition(Duration.seconds(1.5));
+                        nivelPause.setOnFinished(_ -> actualizarPregunta());
+                        nivelPause.play();
+                    }
                 }
             });
             pause.play();
@@ -265,8 +282,9 @@ public class GameView {
                             "-fx-text-fill: white;" +
                             "-fx-background-radius: 5;" +
                             "-fx-padding: 8 15;");
-            feedbackLabel.setText("❌ Incorrecto");
+            feedbackLabel.setText("❌ Incorrecto -5 puntos");
             mostrarModalPerder();
         }
     }
+
 }
