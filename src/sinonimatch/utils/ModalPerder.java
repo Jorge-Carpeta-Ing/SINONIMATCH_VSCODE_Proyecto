@@ -115,7 +115,7 @@ public class ModalPerder {
     }
 
     private static void setHoverEffect(Button button, String hoverColor, String normalColor) {
-        button.setOnMouseEntered(e -> button.setStyle(
+        button.setOnMouseEntered(_ -> button.setStyle(
                 "-fx-background-color: " + hoverColor + ";" +
                         "-fx-text-fill: white;" +
                         "-fx-font-weight: bold;" +
@@ -123,7 +123,7 @@ public class ModalPerder {
                         "-fx-padding: 8 20;" +
                         "-fx-background-radius: 5;" +
                         "-fx-effect: dropshadow(gaussian, rgba(255,255,255,0.3), 10, 0.5, 0, 0);"));
-        button.setOnMouseExited(e -> button.setStyle(
+        button.setOnMouseExited(_ -> button.setStyle(
                 "-fx-background-color: " + normalColor + ";" +
                         "-fx-text-fill: white;" +
                         "-fx-font-weight: bold;" +

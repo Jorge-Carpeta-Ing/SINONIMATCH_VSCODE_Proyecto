@@ -109,7 +109,7 @@ public class PantallaInicial {
                         "-fx-background-radius: 5;");
 
         // Efecto hover
-        btnIniciar.setOnMouseEntered(e -> btnIniciar.setStyle(
+        btnIniciar.setOnMouseEntered(_ -> btnIniciar.setStyle(
                 "-fx-background-color: rgba(94, 131, 185, 0.9);" +
                         "-fx-effect: dropshadow(gaussian, rgba(255,255,255,0.3), 10, 0.5, 0, 0);" +
                         "-fx-font-size: 18px;" +
@@ -118,7 +118,7 @@ public class PantallaInicial {
                         "-fx-text-fill: white;" +
                         "-fx-background-radius: 5;"));
 
-        btnIniciar.setOnMouseExited(e -> btnIniciar.setStyle(
+        btnIniciar.setOnMouseExited(_ -> btnIniciar.setStyle(
                 "-fx-font-size: 18px;" +
                         "-fx-font-weight: bold;" +
                         "-fx-padding: 12 40;" +
@@ -127,7 +127,7 @@ public class PantallaInicial {
                         "-fx-background-radius: 5;" +
                         "-fx-effect: null;"));
 
-        btnIniciar.setOnAction(e -> iniciarJuego());
+        btnIniciar.setOnAction(_ -> iniciarJuego());
         return btnIniciar;
     }
 
