@@ -12,7 +12,7 @@
       "type": "java",
       "name": "Mac run launch",
       "request": "launch",
-      "mainClass": "Sinonimatch",
+      "mainClass": "sinonimatch.Main",
       "vmArgs": [
         "--module-path",
         "lib/javafx-sdk-24.0.1/lib",
@@ -22,6 +22,22 @@
       "classPaths": [
         "${workspaceFolder}/bin"
       ]
+    },
+    {
+      "type": "java",
+      "name": "Mac run launch",
+      "request": "launch",
+      "mainClass": "sinonimatch.Main",
+      "vmArgs": [
+        "--module-path",
+        "${workspaceFolder}/lib/javafx-sdk-24.0.1/lib",
+        "--add-modules",
+        "javafx.controls,javafx.fxml,javafx.base,javafx.graphics,javafx.media"
+      ],
+      "classPaths": [
+        "${workspaceFolder}/bin"
+      ],
+      "preLaunchTask": "compile-javafx"
     }
   ]
 }

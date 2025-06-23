@@ -20,6 +20,7 @@ public class GameController {
     private int puntaje;
     private Timeline temporizador;
     private int tiempoRestante;
+    private int intentosRestantes = 4; // Intentos restantes del jugador
     private Runnable onTiempoAgotado;
 
     public GameController() {
@@ -40,8 +41,10 @@ public class GameController {
             audioManager.reproducirSonidoCorrecto();
             return true;
         } else {
+
             audioManager.reproducirSonidoIncorrecto();
-            reiniciarNivel();
+            perderIntento();
+            // reiniciarNivel();
             return false;
         }
     }
@@ -161,5 +164,22 @@ public class GameController {
             return true;
         }
         return false;
+    }
+
+    // Nuevo getter para los intentos restantes
+    public int getIntentosRestantes() {
+        return intentosRestantes;
+    }
+
+    public void resetearIntentos() {
+        intentosRestantes = 4; // Reinicia los intentos a 4
+    }
+
+    private void perderIntento() {
+        intentosRestantes--; // Reducción del contador
+
+        if (intentosRestantes <= 0) {
+            reiniciarNivel(); // Si se acaban los intentos, reinicia el nivel
+        }
     }
 }

@@ -222,13 +222,21 @@ public class GameView {
     }
 
     private void mostrarModalPerder() {
+        // Mostrar modal siempre que se falle, independientemente de los intentos
         ModalPerder.mostrar(
                 stage,
+                controller.getIntentosRestantes(),
+                controller.getPuntaje(),
+                controller.getNivelActual(),
                 () -> {
-                    controller.reiniciarJuegoCompleto();
+                    // Opción: Continuar con intentos restantes
+                    if (controller.getIntentosRestantes() <= 0) {
+                        controller.reiniciarNivel();
+                    }
                     actualizarPregunta();
                 },
                 () -> {
+                    // Opción: Reiniciar juego completamente
                     controller.reiniciarJuegoCompleto();
                     actualizarPregunta();
                 });
