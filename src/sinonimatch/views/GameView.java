@@ -1,5 +1,6 @@
 package sinonimatch.views;
 
+import javafx.animation.PauseTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -11,8 +12,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import sinonimatch.controllers.GameController;
-// import sinonimatch.utils.Animations;
 import sinonimatch.utils.ModalPerder;
 import sinonimatch.models.Pregunta;
 
@@ -32,18 +33,12 @@ public class GameView {
     private final Label timerLabel;
     private final Button[] opcionesButtons;
 
-    /**
-     * Constructor que inicializa la vista del juego.
-     * 
-     * @param stage Escenario principal de la aplicación
-     */
     public GameView(Stage stage) {
         this.stage = stage;
         this.controller = new GameController();
         this.layout = new VBox(20);
         this.layout.setAlignment(Pos.CENTER);
 
-        // Inicializar todos los componentes UI
         this.palabraLabel = new Label();
         this.nivelLabel = new Label();
         this.feedbackLabel = new Label();
@@ -65,7 +60,6 @@ public class GameView {
 
     private void configurarLayoutPrincipal() {
         try {
-            // 1. Intenta cargar desde recursos (para JAR)
             InputStream is = getClass().getResourceAsStream("/assets/background.jpg");
             if (is != null) {
                 Image backgroundImage = new Image(is);
@@ -77,7 +71,6 @@ public class GameView {
                         new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true));
                 layout.setBackground(new Background(bgImage));
             } else {
-                // 2. Intenta cargar desde sistema de archivos
                 File file = new File("assets/background.jpg");
                 if (file.exists()) {
                     Image backgroundImage = new Image(file.toURI().toString());
@@ -89,13 +82,10 @@ public class GameView {
                             new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true));
                     layout.setBackground(new Background(bgImage));
                 } else {
-                    // 3. Fallback a color sólido
-                    System.err.println("No se encontró la imagen en /assets/background.jpg");
                     layout.setStyle("-fx-background-color: #2a364f;");
                 }
             }
         } catch (Exception e) {
-            System.err.println("Error al cargar imagen de fondo: " + e.getMessage());
             layout.setStyle("-fx-background-color: #2a364f;");
         }
         layout.setPadding(new Insets(20));
@@ -183,7 +173,7 @@ public class GameView {
                             "-fx-padding: 8 15;" +
                             "-fx-effect: null;"));
 
-            opcionesButtons[i].setOnAction(e -> manejarRespuesta(index, opcionesButtons[index]));
+            opcionesButtons[i].setOnAction(e -> manejarRespuesta(index));
         }
     }
 
@@ -207,22 +197,24 @@ public class GameView {
     }
 
     private void actualizarPregunta() {
-        // Detener temporizador anterior si existe
         controller.detenerTemporizador();
 
         Pregunta pregunta = controller.getPreguntaActual();
         palabraLabel.setText("¿Cuál es un sinónimo de: " + pregunta.getPalabra() + "?");
         nivelLabel.setText("Nivel: " + controller.getNivelActual());
 
-        // Actualizar opciones de respuesta
         String[] opciones = pregunta.getOpciones();
         for (int i = 0; i < 4; i++) {
             opcionesButtons[i].setText(opciones[i]);
+            opcionesButtons[i].setStyle(
+                    "-fx-background-color: rgba(74, 111, 165, 0.7);" +
+                            "-fx-text-fill: white;" +
+                            "-fx-background-radius: 5;" +
+                            "-fx-padding: 8 15;");
         }
 
         feedbackLabel.setText("");
 
-        // Reiniciar temporizador para la nueva pregunta
         controller.iniciarTemporizador(
                 () -> timerLabel.setText("🕒 Tiempo restante: " + controller.getTiempoRestante() + "s"),
                 this::tiempoAgotado);
@@ -232,7 +224,6 @@ public class GameView {
         ModalPerder.mostrar(
                 stage,
                 () -> {
-                    // Acción cuando se presiona el botón "Volver a Empezar"
                     controller.reiniciarJuegoCompleto();
                     actualizarPregunta();
                 },
@@ -248,11 +239,32 @@ public class GameView {
         mostrarModalPerder();
     }
 
-    private void manejarRespuesta(int indice, Button boton) {
+    private void manejarRespuesta(int indice) {
         controller.detenerTemporizador();
         if (controller.verificarRespuesta(indice)) {
-            // Lógica de respuesta correcta
+            opcionesButtons[indice].setStyle(
+                    "-fx-background-color: #4CAF50;" +
+                            "-fx-text-fill: white;" +
+                            "-fx-background-radius: 5;" +
+                            "-fx-padding: 8 15;");
+            feedbackLabel.setText("✅ ¡Correcto!");
+
+            PauseTransition pause = new PauseTransition(Duration.seconds(1));
+            pause.setOnFinished(e -> {
+                if (controller.avanzarPregunta()) {
+                    actualizarPregunta();
+                } else {
+                    feedbackLabel.setText("🎉 ¡Felicidades! Has completado el nivel " + controller.getNivelActual());
+                    // Aquí podrías agregar lógica para avanzar al siguiente nivel
+                }
+            });
+            pause.play();
         } else {
+            opcionesButtons[indice].setStyle(
+                    "-fx-background-color: #F44336;" +
+                            "-fx-text-fill: white;" +
+                            "-fx-background-radius: 5;" +
+                            "-fx-padding: 8 15;");
             feedbackLabel.setText("❌ Incorrecto");
             mostrarModalPerder();
         }
