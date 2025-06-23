@@ -71,16 +71,24 @@ public class Nivel {
         return preguntasNivel.get(preguntaActual);
     }
 
+    public void reiniciarPreguntas() {
+        Collections.shuffle(preguntasNivel);
+        preguntaActual = 0;
+    }
+
     public boolean hayMasPreguntas() {
         return preguntaActual < preguntasNivel.size() - 1;
     }
 
     public void avanzarPregunta() {
-        preguntaActual++;
+        if (hayMasPreguntas()) {
+            preguntaActual++;
+        }
     }
 
-    public void reiniciarPreguntas() {
-        Collections.shuffle(preguntasNivel);
+    public void reiniciarJuego() {
+        nivelActual = 1;
         preguntaActual = 0;
+        Collections.shuffle(preguntasNivel);
     }
 }

@@ -1,17 +1,23 @@
 package sinonimatch.views;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import sinonimatch.controllers.GameController;
-// import main.java.sinonimatch.controllers.GameController;
-// import main.java.sinonimatch.models.Pregunta;
-// import main.java.sinonimatch.utils.Animations;
+// import sinonimatch.utils.Animations;
+import sinonimatch.utils.ModalPerder;
 import sinonimatch.models.Pregunta;
-import sinonimatch.utils.Animations;
+
+import java.io.File;
+import java.io.InputStream;
 
 /**
  * Vista principal del juego que muestra las preguntas y opciones.
@@ -20,7 +26,11 @@ public class GameView {
     private final Stage stage;
     private final GameController controller;
     private final VBox layout;
-    private Label palabraLabel, nivelLabel, feedbackLabel, timerLabel;
+    private final Label palabraLabel;
+    private final Label nivelLabel;
+    private final Label feedbackLabel;
+    private final Label timerLabel;
+    private final Button[] opcionesButtons;
 
     /**
      * Constructor que inicializa la vista del juego.
@@ -32,55 +42,219 @@ public class GameView {
         this.controller = new GameController();
         this.layout = new VBox(20);
         this.layout.setAlignment(Pos.CENTER);
+
+        // Inicializar todos los componentes UI
+        this.palabraLabel = new Label();
+        this.nivelLabel = new Label();
+        this.feedbackLabel = new Label();
+        this.timerLabel = new Label();
+        this.opcionesButtons = new Button[4];
+
         inicializarUI();
     }
 
     private void inicializarUI() {
-        // Configuración del fondo y elementos UI
-        // ... (similar a tu código original pero usando el controller)
+        configurarLayoutPrincipal();
+        StackPane contentPane = crearRecuadroTransparente();
+        VBox contentBox = crearContenedorContenido();
 
-        // Configurar escena
-        Scene scene = new Scene(layout, 600, 500);
-        stage.setScene(scene);
-        stage.setTitle("🎮 Sinonimatch - Versión Final");
+        contentPane.getChildren().add(contentBox);
+        layout.getChildren().add(contentPane);
+        configurarEscena();
     }
 
-    /**
-     * Muestra la vista en el escenario.
-     */
+    private void configurarLayoutPrincipal() {
+        try {
+            // 1. Intenta cargar desde recursos (para JAR)
+            InputStream is = getClass().getResourceAsStream("/assets/background.jpg");
+            if (is != null) {
+                Image backgroundImage = new Image(is);
+                BackgroundImage bgImage = new BackgroundImage(
+                        backgroundImage,
+                        BackgroundRepeat.NO_REPEAT,
+                        BackgroundRepeat.NO_REPEAT,
+                        BackgroundPosition.CENTER,
+                        new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true));
+                layout.setBackground(new Background(bgImage));
+            } else {
+                // 2. Intenta cargar desde sistema de archivos
+                File file = new File("assets/background.jpg");
+                if (file.exists()) {
+                    Image backgroundImage = new Image(file.toURI().toString());
+                    BackgroundImage bgImage = new BackgroundImage(
+                            backgroundImage,
+                            BackgroundRepeat.NO_REPEAT,
+                            BackgroundRepeat.NO_REPEAT,
+                            BackgroundPosition.CENTER,
+                            new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true));
+                    layout.setBackground(new Background(bgImage));
+                } else {
+                    // 3. Fallback a color sólido
+                    System.err.println("No se encontró la imagen en /assets/background.jpg");
+                    layout.setStyle("-fx-background-color: #2a364f;");
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Error al cargar imagen de fondo: " + e.getMessage());
+            layout.setStyle("-fx-background-color: #2a364f;");
+        }
+        layout.setPadding(new Insets(20));
+        layout.setAlignment(Pos.CENTER);
+    }
+
+    private StackPane crearRecuadroTransparente() {
+        StackPane contentPane = new StackPane();
+        contentPane.setMaxSize(500, 400);
+        contentPane.setStyle(
+                "-fx-background-color: rgba(0, 0, 0, 0.4);" +
+                        "-fx-background-radius: 15;" +
+                        "-fx-border-color: rgba(0, 0, 0, 0.5);" +
+                        "-fx-border-width: 1.5;" +
+                        "-fx-border-radius: 15;");
+        return contentPane;
+    }
+
+    private VBox crearContenedorContenido() {
+        configurarEtiquetas();
+        configurarBotonesOpciones();
+
+        VBox contentBox = new VBox(15);
+        contentBox.setAlignment(Pos.CENTER);
+        contentBox.setPadding(new Insets(30));
+        contentBox.setMaxWidth(400);
+
+        contentBox.getChildren().addAll(
+                nivelLabel,
+                palabraLabel,
+                timerLabel,
+                crearGridOpciones(),
+                feedbackLabel);
+
+        return contentBox;
+    }
+
+    private void configurarEscena() {
+        Scene scene = new Scene(layout, 600, 500);
+        scene.setFill(Color.TRANSPARENT);
+        stage.setScene(scene);
+        stage.setTitle("🎮 Sinonimatch - Versión Final");
+        stage.setResizable(false);
+        stage.centerOnScreen();
+    }
+
+    private void configurarEtiquetas() {
+        palabraLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
+        palabraLabel.setTextFill(Color.WHITE);
+        palabraLabel.setWrapText(true);
+
+        nivelLabel.setFont(Font.font("Arial", FontWeight.BOLD, 22));
+        nivelLabel.setTextFill(Color.WHITE);
+
+        timerLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+        timerLabel.setTextFill(Color.GOLD);
+
+        feedbackLabel.setFont(Font.font("Arial", 14));
+        feedbackLabel.setTextFill(Color.web("#ffcc00"));
+    }
+
+    private void configurarBotonesOpciones() {
+        for (int i = 0; i < 4; i++) {
+            opcionesButtons[i] = new Button();
+            opcionesButtons[i].setMinSize(200, 50);
+            opcionesButtons[i].setFont(Font.font("Arial", FontWeight.BOLD, 14));
+            opcionesButtons[i].setStyle(
+                    "-fx-background-color: rgba(74, 111, 165, 0.7);" +
+                            "-fx-text-fill: white;" +
+                            "-fx-background-radius: 5;" +
+                            "-fx-padding: 8 15;");
+
+            final int index = i;
+            opcionesButtons[i].setOnMouseEntered(e -> opcionesButtons[index].setStyle(
+                    "-fx-background-color: rgba(94, 131, 185, 0.9);" +
+                            "-fx-text-fill: white;" +
+                            "-fx-background-radius: 5;" +
+                            "-fx-padding: 8 15;" +
+                            "-fx-effect: dropshadow(gaussian, rgba(255,255,255,0.3), 10, 0.5, 0, 0);"));
+
+            opcionesButtons[i].setOnMouseExited(e -> opcionesButtons[index].setStyle(
+                    "-fx-background-color: rgba(74, 111, 165, 0.7);" +
+                            "-fx-text-fill: white;" +
+                            "-fx-background-radius: 5;" +
+                            "-fx-padding: 8 15;" +
+                            "-fx-effect: null;"));
+
+            opcionesButtons[i].setOnAction(e -> manejarRespuesta(index, opcionesButtons[index]));
+        }
+    }
+
+    private GridPane crearGridOpciones() {
+        GridPane grid = new GridPane();
+        grid.setAlignment(Pos.CENTER);
+        grid.setHgap(15);
+        grid.setVgap(15);
+        grid.setPadding(new Insets(20, 0, 0, 0));
+
+        for (int i = 0; i < 4; i++) {
+            grid.add(opcionesButtons[i], i % 2, i / 2);
+        }
+
+        return grid;
+    }
+
     public void mostrar() {
         actualizarPregunta();
         stage.show();
     }
 
     private void actualizarPregunta() {
+        // Detener temporizador anterior si existe
+        controller.detenerTemporizador();
+
         Pregunta pregunta = controller.getPreguntaActual();
         palabraLabel.setText("¿Cuál es un sinónimo de: " + pregunta.getPalabra() + "?");
         nivelLabel.setText("Nivel: " + controller.getNivelActual());
 
+        // Actualizar opciones de respuesta
+        String[] opciones = pregunta.getOpciones();
+        for (int i = 0; i < 4; i++) {
+            opcionesButtons[i].setText(opciones[i]);
+        }
+
+        feedbackLabel.setText("");
+
+        // Reiniciar temporizador para la nueva pregunta
         controller.iniciarTemporizador(
                 () -> timerLabel.setText("🕒 Tiempo restante: " + controller.getTiempoRestante() + "s"),
                 this::tiempoAgotado);
     }
 
+    private void mostrarModalPerder() {
+        ModalPerder.mostrar(
+                stage,
+                () -> {
+                    // Acción cuando se presiona el botón "Volver a Empezar"
+                    controller.reiniciarJuegoCompleto();
+                    actualizarPregunta();
+                },
+                () -> {
+                    controller.reiniciarJuegoCompleto();
+                    actualizarPregunta();
+                });
+    }
+
     private void tiempoAgotado() {
-        feedbackLabel.setText("⏰ ¡Tiempo agotado! Reiniciando nivel...");
-        controller.reiniciarNivel();
-        actualizarPregunta();
+        feedbackLabel.setText("⏰ ¡Tiempo agotado!");
+        controller.detenerTemporizador();
+        mostrarModalPerder();
     }
 
     private void manejarRespuesta(int indice, Button boton) {
         controller.detenerTemporizador();
         if (controller.verificarRespuesta(indice)) {
-            Animations.animarBoton(boton);
-            if (controller.esUltimoNivel()) {
-                new VictoryView(stage, controller.getPuntaje()).mostrar();
-            } else {
-                actualizarPregunta();
-            }
+            // Lógica de respuesta correcta
         } else {
-            feedbackLabel.setText("❌ Incorrecto. Reiniciando nivel...");
-            actualizarPregunta();
+            feedbackLabel.setText("❌ Incorrecto");
+            mostrarModalPerder();
         }
     }
 }

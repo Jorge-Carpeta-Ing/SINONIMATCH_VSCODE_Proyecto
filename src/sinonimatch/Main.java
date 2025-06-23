@@ -3,6 +3,7 @@ package sinonimatch;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import sinonimatch.views.GameView;
+import sinonimatch.views.PantallaInicial;
 
 /**
  * Clase principal que inicia la aplicación Sinonimatch.
@@ -26,7 +27,10 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage primaryStage) {
-        GameView gameView = new GameView(primaryStage);
-        gameView.mostrar();
+        // GameView gameView = new GameView(primaryStage);
+        // gameView.mostrar();
+        PantallaInicial pantallaInicial = new PantallaInicial(primaryStage);
+        pantallaInicial.mostrar();
+
     }
 }
