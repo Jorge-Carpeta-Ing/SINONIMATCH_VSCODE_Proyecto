@@ -27,31 +27,31 @@ public class Nivel {
     private void inicializarBancoPreguntas() {
         // Nivel 1 - Preguntas básicas
         bancoPreguntas.put(1, Arrays.asList(
-                new Pregunta("Feliz", new String[] { "Triste", "Enojado", "Contento", "Serio" }, 2),
-                new Pregunta("Rápido", new String[] { "Lento", "Ágil", "Pausado", "Tardío" }, 1),
-                new Pregunta("Hermoso", new String[] { "Feo", "Bello", "Horrible", "Desagradable" }, 1),
-                new Pregunta("Valiente", new String[] { "Cobarde", "Audaz", "Miedoso", "Tímido" }, 1),
-                new Pregunta("Inteligente", new String[] { "Tonto", "Listo", "Necio", "Ignorante" }, 1),
-                new Pregunta("Grande", new String[] { "Pequeño", "Enorme", "Diminuto", "Reducido" }, 1),
-                new Pregunta("Fuerte", new String[] { "Débil", "Robusto", "Frágil", "Vulnerable" }, 1)));
+                new Pregunta("Feliz", new String[] { "Contento", "Triste", "Serio", "Enojado" }, 0),
+                new Pregunta("Rápido", new String[] { "Tardío", "Ágil", "Lento", "Pausado" }, 1),
+                new Pregunta("Hermoso", new String[] { "Desagradable", "Horrible", "Bello", "Feo" }, 2),
+                new Pregunta("Valiente", new String[] { "Tímido", "Cobarde", "Audaz", "Miedoso" }, 2),
+                new Pregunta("Inteligente", new String[] { "Ignorante", "Necio", "Listo", "Tonto" }, 2),
+                new Pregunta("Grande", new String[] { "Diminuto", "Reducido", "Enorme", "Pequeño" }, 2),
+                new Pregunta("Fuerte", new String[] { "Vulnerable", "Robusto", "Frágil", "Débil" }, 1)));
 
         // Nivel 2 - Preguntas intermedias
         bancoPreguntas.put(2, Arrays.asList(
-                new Pregunta("Sabio", new String[] { "Ignorante", "Erudito", "Tonto", "Absurdo" }, 1),
-                new Pregunta("Generoso", new String[] { "Egoísta", "Dadivoso", "Avaro", "Tacaño" }, 1),
-                new Pregunta("Pacífico", new String[] { "Violento", "Tranquilo", "Agresivo", "Belicoso" }, 1),
-                new Pregunta("Honesto", new String[] { "Corrupto", "Íntegro", "Deshonesto", "Engañoso" }, 1),
-                new Pregunta("Humilde", new String[] { "Arrogante", "Modesto", "Presumido", "Engreído" }, 1),
-                new Pregunta("Optimista", new String[] { "Pesimista", "Esperanzado", "Negativo", "Desalentador" }, 1)));
+                new Pregunta("Sabio", new String[] { "Absurdo", "Erudito", "Ignorante", "Tonto" }, 1),
+                new Pregunta("Generoso", new String[] { "Tacaño", "Avaro", "Dadivoso", "Egoísta" }, 2),
+                new Pregunta("Pacífico", new String[] { "Belicoso", "Agresivo", "Tranquilo", "Violento" }, 2),
+                new Pregunta("Honesto", new String[] { "Engañoso", "Íntegro", "Deshonesto", "Corrupto" }, 1),
+                new Pregunta("Humilde", new String[] { "Engreído", "Modesto", "Presumido", "Arrogante" }, 1),
+                new Pregunta("Optimista", new String[] { "Negativo", "Esperanzado", "Desalentador", "Pesimista" }, 1)));
 
         // Nivel 3 - Preguntas avanzadas
         bancoPreguntas.put(3, Arrays.asList(
-                new Pregunta("Inquebrantable", new String[] { "Rígido", "Firme", "Flexible", "Débil" }, 1),
-                new Pregunta("Efímero", new String[] { "Duradero", "Fugaz", "Permanente", "Eterno" }, 1),
-                new Pregunta("Prudente", new String[] { "Imprudente", "Cauto", "Temerario", "Arriesgado" }, 1),
-                new Pregunta("Meticuloso", new String[] { "Descuidado", "Detallista", "Negligente", "Informal" }, 1),
-                new Pregunta("Resiliente", new String[] { "Frágil", "Resistente", "Débil", "Vulnerable" }, 1),
-                new Pregunta("Sagaz", new String[] { "Ingenuo", "Astuto", "Crédulo", "Inocente" }, 1)));
+                new Pregunta("Inquebrantable", new String[] { "Débil", "Firme", "Flexible", "Rígido" }, 1),
+                new Pregunta("Efímero", new String[] { "Permanente", "Fugaz", "Eterno", "Duradero" }, 1),
+                new Pregunta("Prudente", new String[] { "Arriesgado", "Temerario", "Cauto", "Imprudente" }, 2),
+                new Pregunta("Meticuloso", new String[] { "Informal", "Detallista", "Negligente", "Descuidado" }, 1),
+                new Pregunta("Resiliente", new String[] { "Vulnerable", "Resistente", "Débil", "Frágil" }, 1),
+                new Pregunta("Sagaz", new String[] { "Inocente", "Astuto", "Crédulo", "Ingenuo" }, 1)));
     }
 
     /**
