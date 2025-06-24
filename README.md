@@ -18,8 +18,8 @@ Meanwhile, the compiled output files will be generated in the `bin` folder by de
 The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
 
 
-## compilacion manual Mac
+## Ejucutar para hacer la compilación
 javac -d bin --module-path lib/javafx-sdk-24.0.1/lib \
     --add-modules javafx.controls,javafx.fxml,javafx.media \
-    src/sinonimatch/Main.java \
-    src/sinonimatch/*/*.java
+    src/Main.java \
+    src/*/*.java

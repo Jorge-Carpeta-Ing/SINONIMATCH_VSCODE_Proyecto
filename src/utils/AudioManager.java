@@ -1,4 +1,4 @@
-package sinonimatch.utils;
+package utils;
 
 import javafx.scene.media.AudioClip;
 import java.io.File;

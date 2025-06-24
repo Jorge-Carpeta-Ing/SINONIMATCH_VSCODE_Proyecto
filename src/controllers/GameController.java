@@ -1,12 +1,12 @@
-package sinonimatch.controllers;
+package controllers;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.util.Duration;
-import sinonimatch.models.Pregunta;
-import sinonimatch.models.Nivel;
-import sinonimatch.utils.AudioManager;
+import models.Pregunta;
+import models.Nivel;
+import utils.AudioManager;
 
 import java.util.Timer;
 import java.util.TimerTask;

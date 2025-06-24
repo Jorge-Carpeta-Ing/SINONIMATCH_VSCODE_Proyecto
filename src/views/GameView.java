@@ -1,4 +1,4 @@
-package sinonimatch.views;
+package views;
 
 import javafx.animation.PauseTransition;
 import javafx.geometry.Insets;
@@ -13,10 +13,10 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import sinonimatch.controllers.GameController;
-import sinonimatch.utils.ModalGanar;
-import sinonimatch.utils.ModalPerder;
-import sinonimatch.models.Pregunta;
+import controllers.GameController;
+import utils.ModalGanar;
+import utils.ModalPerder;
+import models.Pregunta;
 
 import java.io.File;
 import java.io.InputStream;

@@ -1,8 +1,7 @@
-package sinonimatch;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import sinonimatch.views.PantallaInicial;
+import views.PantallaInicial;
 
 /**
  * Clase principal que inicia la aplicación Sinonimatch.

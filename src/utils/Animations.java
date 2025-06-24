@@ -1,4 +1,4 @@
-package sinonimatch.utils;
+package utils;
 
 import javafx.animation.ScaleTransition;
 import javafx.scene.Node;

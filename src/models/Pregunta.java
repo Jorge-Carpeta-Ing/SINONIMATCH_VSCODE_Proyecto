@@ -1,4 +1,4 @@
-package sinonimatch.models;
+package models;
 
 /**
  * Clase que representa una pregunta del juego con sus opciones y respuesta
