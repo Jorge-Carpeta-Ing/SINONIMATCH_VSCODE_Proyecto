@@ -3,13 +3,6 @@
   "configurations": [
     {
       "type": "java",
-      "name": "Run Sinonimatch",
-      "request": "launch",
-      "mainClass": "Sinonimatch",
-      "vmArgs": "--module-path lib/javafx-sdk-17.0.15/lib --add-modules javafx.controls,javafx.media"
-    },
-    {
-      "type": "java",
       "name": "Mac run launch",
       "request": "launch",
       "mainClass": "Main",
@@ -22,6 +15,13 @@
       "classPaths": [
         "${workspaceFolder}/bin"
       ]
+    },
+    {
+      "type": "java",
+      "name": "Run Sinonimatch",
+      "request": "launch",
+      "mainClass": "Main",
+      "vmArgs": "--module-path lib/javafx-sdk-17.0.15/lib --add-modules javafx.controls,javafx.media"
     },
   ]
 }
